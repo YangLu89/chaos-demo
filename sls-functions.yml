@@ -1,0 +1,13 @@
+function1:
+  handler: functions/function1.handler
+  timeout: 3
+  environment:
+    FAILURE_INJECTION_PARAM: /${self:service}/${self:custom.stage}/function1
+  layers:
+    - arn:aws:lambda:us-east-1:275332830714:layer:ChaosInjectionLayer-dev:4
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - ssm:GetParameters
+        - ssm:GetParameter
+      Resource: "arn:aws:ssm:${opt:region, self:provider.region}:*:parameter/${self:service}*"

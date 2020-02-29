@@ -1,0 +1,51 @@
+service: chaos-demo
+
+plugins:
+  - serverless-pseudo-parameters
+  - serverless-iam-roles-per-function
+  # - serverless-python-requirements
+
+provider:
+  name: aws
+  runtime: python3.7
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  tracing:
+    lambda: true
+  environment:
+    STAGE: ${self:provider.stage}
+    LOG_LEVEL: ${self:custom.logLevel.${self:custom.stage}, self:custom.logLevel.default}
+    LOG_MODE: ${self:custom.logMode.${self:custom.stage}, self:custom.logMode.default}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+      Resource: [
+          "*"
+        ]
+    - Effect: Allow
+      Action:
+        - xray:PutTraceSegments
+        - xray:PutTelemetryRecords
+      Resource:
+        - '*'
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, self:provider.region}
+  logLevel:
+    prod: INFO
+    dev: INFO
+    default: DEBUG
+  logMode:
+    prod: JSON
+    dev: JSON
+    default: JSON
+  serverless-iam-roles-per-function:
+    defaultInherit: true
+
+functions: ${file(./sls-functions.yml)}

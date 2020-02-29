@@ -1,0 +1,14 @@
+{
+    "name": "chaos-demo",
+    "version": "1.0.0",
+    "description": "chaos engineering demo for serverless",
+    "author": "Yang Lu",
+    "license": "MIT",
+    "devDependencies": {
+        "serverless": "^1.65.0"
+    },
+    "dependencies": {
+        "serverless-iam-roles-per-function": "^2.0.2",
+        "serverless-pseudo-parameters": "^2.5.0"
+    }
+}

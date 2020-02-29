@@ -1,0 +1,20 @@
+service: ChaosInjectionLayer
+
+provider:
+  name: aws
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+
+layers:
+  latencyInjection:
+    path: ./
+    name: ${self:service}-${self:provider.stage}
+    compatibleRuntimes:
+      - python3.7
+    retain: true
+
+package:
+  exclude:
+    - ./**
+  include:
+    - python/**

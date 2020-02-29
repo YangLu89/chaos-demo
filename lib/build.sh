@@ -1,0 +1,1 @@
+docker run -v $PWD:/var/task -it lambci/lambda:build-python3.7 /bin/bash -c "pip install -r python/requirements.txt -t .python/.vendor"

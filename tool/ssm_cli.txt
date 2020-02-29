@@ -1,0 +1,1 @@
+aws ssm put-parameter --region us-west-1 --name /chaos-demo/dev/function1 --type String --overwrite --value "{ \"delay\": 400, \"isEnabled\": true, \"error_code\": 404, \"exception_msg\": \"I really failed seriously\", \"rate\": 1 }"
